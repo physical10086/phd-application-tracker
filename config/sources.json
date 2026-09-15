@@ -1,0 +1,39 @@
+{
+  "domains": [
+    "euraxess.ec.europa.eu",
+    "academictransfer.com",
+    "academicpositions.com",
+    "findaphd.com",
+    "jobs.ethz.ch",
+    "eqe.ethz.ch",
+    "tue.varbi.com",
+    "mpq.mpg.de",
+    "pi5.uni-stuttgart.de",
+    "muniqc-atoms.munich-quantum-valley.de",
+    "uni-tuebingen.de",
+    "uibk.ac.at",
+    "iqoqi.at",
+    "strath.ac.uk",
+    "umqt.phys.strath.ac.uk",
+    "cornishlabs.uk",
+    "isis.unistra.fr",
+    "unistra.fr",
+    "iap.uni-bonn.de",
+    "quantumgases.lens.unifi.it"
+  ],
+  "watch_urls": [
+    "https://eqe.ethz.ch/the-group/open-positions/open-position-phd.html",
+    "https://www.jobs.ethz.ch/job/view/JOPG_ethz_VICQKrWgFLEoyEPTP7",
+    "https://tue.varbi.com/pl/what%3Ajob/jobID%3A963525/",
+    "https://www.mpq.mpg.de/6859065/Positions",
+    "https://www.mpq.mpg.de/6859879/ryd-yb-tweezer-array",
+    "https://www.mpq.mpg.de/6859312/yb-hybrid-tweezer-lattice",
+    "https://www.pi5.uni-stuttgart.de/research/rydberg-quantum-computer/",
+    "https://muniqc-atoms.munich-quantum-valley.de/partners/tuebingen",
+    "https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/physik/institute/physikalisches-institut/bereiche/atomphysikquantenoptik/quantum-many-body-physics/work-with-us/",
+    "https://umqt.phys.strath.ac.uk/ryd-projects/ryd-main/",
+    "https://www.cornishlabs.uk/join-us",
+    "https://www.iap.uni-bonn.de/nqo/en/join-us",
+    "https://quantumgases.lens.unifi.it/exp/sr-rydberg/sr-atoms"
+  ]
+}

@@ -1,0 +1,14 @@
+上传方法：
+1. 打开 https://github.com/physical10086/phd-application-tracker
+2. Add file -> Upload files
+3. 将本压缩包解压后的“所有文件和文件夹”拖到仓库根目录（不要上传外层文件夹本身）
+4. Commit changes
+5. Settings -> Pages -> Deploy from a branch -> main -> /(root) -> Save
+6. Actions 中确认 Daily PhD opportunity update 已启用
+
+说明：
+- index.html 是在线网站入口
+- .github/workflows/daily_update.yml 是每日自动更新工作流
+- scripts/update_opportunities.py 是检索脚本
+- data/ 为机会数据
+- PhD_Tracker_2026-09-15.html 是 2026-09-15 的独立快照备份

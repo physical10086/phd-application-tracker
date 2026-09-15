@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>博士申请机会追踪网站</title>
+  <meta name="description" content="欧洲实验物理 / 中性原子量子计算 PhD 机会追踪与申请进度管理" />
+  <style>
+:root {
+  --bg: #0f1317;
+  --panel: #171d22;
+  --panel-2: #1d252b;
+  --line: #2a353d;
+  --text: #edf3f6;
+  --muted: #96a4ad;
+  --soft: #c6d0d5;
+  --accent: #6ad7e5;
+  --accent-2: #f59e5b;
+  --good: #78d59b;
+  --warn: #f1c76d;
+  --bad: #ee7b7b;
+  --shadow: 0 18px 50px rgba(0,0,0,.24);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr}
+.sidebar{position:sticky;top:0;height:100vh;padding:28px 20px;border-right:1px solid var(--line);background:#0c1013;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px}.brand-mark{width:38px;height:38px;border:1px solid var(--accent);display:grid;place-items:center;font-weight:800;color:var(--accent);border-radius:10px;box-shadow:0 0 28px rgba(106,215,229,.12)}
+.brand-title{font-size:16px;font-weight:750}.brand-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.nav{display:grid;gap:8px}.nav-item{border:0;background:transparent;color:var(--muted);text-align:left;padding:12px 14px;border-radius:10px}.nav-item:hover,.nav-item.active{background:var(--panel);color:var(--text)}.nav-item.active{box-shadow:inset 2px 0 var(--accent)}
+.side-card{margin-top:auto;border:1px solid var(--line);border-radius:14px;padding:15px;background:linear-gradient(180deg,rgba(106,215,229,.05),rgba(255,255,255,.01))}.side-card-title{font-weight:700;margin-bottom:10px}.status-line{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--soft)}.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}.dot.ok{background:var(--good);box-shadow:0 0 12px rgba(120,213,155,.6)}.side-card-copy{font-size:12px;line-height:1.6;color:var(--muted);margin-top:9px}.side-actions{display:grid;gap:8px}.ghost-btn,.file-label{border:1px solid var(--line);background:transparent;color:var(--soft);border-radius:10px;padding:9px 12px;text-align:center;font-size:12px}.file-label input{display:none}
+.main{padding:34px 40px 60px;min-width:0}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:28px}.eyebrow,.section-kicker{font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:800}.topbar h1{font-size:28px;margin:7px 0 0}.top-actions{display:flex;align-items:center;gap:14px}.last-sync{color:var(--muted);font-size:12px}.primary-btn{border:0;border-radius:10px;padding:11px 16px;background:var(--accent);color:#06242a;font-weight:800}.primary-btn:hover{filter:brightness(1.05)}
+.view{display:none}.active-view{display:block}
+.hero-grid{display:grid;grid-template-columns:2.2fr repeat(3,1fr);gap:14px}.hero-card,.metric-card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.hero-card{padding:24px}.hero-label{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:.13em}.hero-title{font-size:23px;font-weight:800;line-height:1.25;margin-top:9px}.hero-copy{color:var(--muted);line-height:1.6;font-size:13px;margin-top:10px}.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.mini-tag,.tag{border:1px solid var(--line);background:#11171b;color:var(--soft);border-radius:999px;padding:5px 9px;font-size:11px}.metric-card{padding:22px;min-height:150px;display:flex;flex-direction:column;justify-content:center}.metric-card.accent{background:linear-gradient(145deg,rgba(106,215,229,.14),var(--panel))}.metric-label{font-size:12px;color:var(--muted)}.metric-value{font-size:40px;font-weight:850;margin:6px 0}.metric-sub{font-size:11px;color:var(--muted)}
+.section-head{display:flex;align-items:end;justify-content:space-between;margin:34px 0 16px}.section-head.second{margin-top:38px}.section-head h2,.panel-head h2{margin:5px 0 0;font-size:20px}.text-btn{border:0;background:transparent;color:var(--accent);font-size:13px}
+.card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.compact-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.opp-card{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:17px;display:flex;flex-direction:column;gap:12px;min-width:0;transition:.2s}.opp-card:hover{transform:translateY(-2px);border-color:#3a4c57}.card-top{display:flex;justify-content:space-between;gap:12px}.card-type{font-size:10px;color:var(--accent);font-weight:800;letter-spacing:.12em}.verify{font-size:10px;color:var(--muted)}.verify.ok{color:var(--good)}.opp-title{font-size:16px;font-weight:780;line-height:1.35}.inst{font-size:12px;color:var(--muted);line-height:1.4}.tag-row{display:flex;gap:6px;flex-wrap:wrap}.card-meta{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-top:auto}.deadline{font-size:11px;color:var(--soft)}.deadline span{display:block;color:var(--muted);margin-bottom:3px}.match-badge{min-width:55px;height:55px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:850;color:var(--accent);background:#10161a}.status-select{width:100%;border:1px solid var(--line);background:#10161a;color:var(--text);border-radius:9px;padding:8px 9px}.card-actions{display:flex;gap:8px}.card-actions button{flex:1;border:1px solid var(--line);background:#11171b;color:var(--soft);padding:8px;border-radius:9px}.source-btn{text-decoration:none;border:1px solid var(--line);background:#11171b;color:var(--soft);padding:8px 10px;border-radius:9px;font-size:12px;text-align:center}
+.toolbar{display:grid;grid-template-columns:2.2fr repeat(4,1fr);gap:10px}.toolbar input,.toolbar select,.form-panel input,.form-panel textarea,.add-form input,.add-form textarea{width:100%;border:1px solid var(--line);background:#11171b;color:var(--text);border-radius:10px;padding:11px 12px;outline:none}.toolbar input:focus,.form-panel textarea:focus,.add-form input:focus,.add-form textarea:focus{border-color:var(--accent)}.toolbar select{border:1px solid var(--line);background:#11171b;color:var(--text);border-radius:10px;padding:10px}.result-meta{font-size:12px;color:var(--muted);margin:14px 0}
+.pipeline{display:grid;grid-template-columns:repeat(9,1fr);gap:8px}.pipe-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 10px;min-height:92px}.pipe-count{font-size:24px;font-weight:850}.pipe-label{font-size:10px;color:var(--muted);line-height:1.3;margin-top:6px}
+.profile-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}.panel{padding:22px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:22px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-grid .full{grid-column:1/-1}.form-panel label,.add-form label{display:block;font-size:12px;color:var(--soft)}.form-panel textarea,.add-form input,.add-form textarea{margin-top:7px;resize:vertical;line-height:1.55}.profile-note h3{font-size:18px;margin:7px 0 10px}.profile-note p,.profile-note li{font-size:13px;color:var(--muted);line-height:1.65}.profile-note ul{padding-left:18px}.warning{font-size:12px;color:var(--warn);border:1px solid rgba(241,199,109,.26);background:rgba(241,199,109,.05);padding:10px;border-radius:10px;margin-top:16px}
+.history-list{display:grid;gap:10px}.history-row{border:1px solid var(--line);background:#11171b;border-radius:12px;padding:14px;display:grid;grid-template-columns:120px 100px 100px 100px 1fr;gap:12px;align-items:center}.history-date{font-weight:800}.history-stat{font-size:12px;color:var(--soft)}.history-stat strong{color:var(--accent);font-size:16px}.history-note{font-size:12px;color:var(--muted)}
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px}.modal.hidden{display:none}.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px)}.modal-card{position:relative;width:min(680px,96vw);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 28px 90px rgba(0,0,0,.5)}.modal-card.large{width:min(900px,96vw)}.modal-close{position:absolute;right:15px;top:12px;border:0;background:transparent;color:var(--muted);font-size:28px}.detail-title{font-size:27px;line-height:1.25;margin:8px 40px 8px 0}.detail-sub{color:var(--muted);font-size:13px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0}.detail-box{border:1px solid var(--line);background:#11171b;border-radius:12px;padding:14px}.detail-box .k{font-size:10px;color:var(--muted);letter-spacing:.1em}.detail-box .v{font-size:13px;line-height:1.55;margin-top:5px}.detail-section{margin-top:20px}.detail-section h3{font-size:13px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}.detail-section p{font-size:13px;line-height:1.7;color:var(--soft)}.source-link{display:inline-flex;margin-top:10px;text-decoration:none;color:#06242a;background:var(--accent);font-size:12px;font-weight:800;padding:10px 12px;border-radius:9px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.add-form{display:grid;gap:13px;margin-top:20px}
+.empty{grid-column:1/-1;border:1px dashed var(--line);border-radius:14px;padding:36px;text-align:center;color:var(--muted)}
+@media (max-width:1200px){.hero-grid{grid-template-columns:1.6fr 1fr 1fr}.hero-grid .metric-card:last-child{display:none}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.compact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{grid-template-columns:1fr 1fr 1fr}.search-wrap{grid-column:1/-1}.pipeline{grid-template-columns:repeat(5,1fr)}}
+@media (max-width:860px){.shell{display:block}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}.nav{grid-template-columns:repeat(4,1fr)}.nav-item{text-align:center}.side-card,.side-actions{display:none}.main{padding:24px 16px 50px}.topbar{display:block}.top-actions{margin-top:14px;justify-content:space-between}.hero-grid,.profile-layout{grid-template-columns:1fr}.card-grid,.compact-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.search-wrap{grid-column:1/-1}.pipeline{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}.history-row{grid-template-columns:1fr 1fr}.history-note{grid-column:1/-1}.detail-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">Q</div>
+        <div>
+          <div class="brand-title">PhD Tracker</div>
+          <div class="brand-sub">博士申请机会追踪</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">概览</button>
+        <button class="nav-item" data-view="opportunities">机会列表</button>
+        <button class="nav-item" data-view="profile">个人申请背景</button>
+        <button class="nav-item" data-view="history">检索记录</button>
+      </nav>
+
+      <div class="side-card">
+        <div class="side-card-title">自动更新</div>
+        <div class="status-line"><span class="dot ok"></span><span>GitHub Actions 已配置</span></div>
+        <div class="side-card-copy">部署到 GitHub 后可每日自动搜索、验链、去重并更新数据。</div>
+      </div>
+
+      <div class="side-actions">
+        <button id="exportBtn" class="ghost-btn">导出备份 JSON</button>
+        <label class="ghost-btn file-label">导入备份<input id="importInput" type="file" accept="application/json" /></label>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">EUROPE · EXPERIMENTAL AMO · NEUTRAL ATOMS</div>
+          <h1 id="pageTitle">博士申请总览</h1>
+        </div>
+        <div class="top-actions">
+          <div class="last-sync" id="lastSync">最后检索：—</div>
+          <button id="addOpportunityBtn" class="primary-btn">+ 添加机会</button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active-view">
+        <div class="hero-grid">
+          <div class="hero-card">
+            <div class="hero-label">当前策略</div>
+            <div class="hero-title">Rydberg → Neutral-Atom Quantum Hardware</div>
+            <div class="hero-copy">优先正式岗位，其次长期开放课题组；所有条目必须保留原始来源，缺失信息显示“来源未说明”。</div>
+            <div class="hero-tags" id="heroTags"></div>
+          </div>
+          <div class="metric-card accent">
+            <div class="metric-label">已提交</div>
+            <div class="metric-value" id="submittedCount">0</div>
+            <div class="metric-sub">正式申请</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">已联系导师</div>
+            <div class="metric-value" id="contactedCount">0</div>
+            <div class="metric-sub">含已回复</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">高匹配机会</div>
+            <div class="metric-value" id="highMatchCount">0</div>
+            <div class="metric-sub">≥ 90%</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">NEXT ACTIONS</div>
+            <h2>下一步最值得处理</h2>
+          </div>
+          <button class="text-btn" data-go="opportunities">查看全部 →</button>
+        </div>
+        <div id="priorityGrid" class="card-grid compact-grid"></div>
+
+        <div class="section-head second">
+          <div>
+            <div class="section-kicker">PIPELINE</div>
+            <h2>申请进度分布</h2>
+          </div>
+        </div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <section id="opportunitiesView" class="view">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <input id="searchInput" type="search" placeholder="搜索项目、学校、导师、方向…" />
+          </div>
+          <select id="statusFilter">
+            <option value="">全部状态</option>
+          </select>
+          <select id="countryFilter"><option value="">全部国家</option></select>
+          <select id="typeFilter"><option value="">全部类型</option></select>
+          <select id="matchFilter">
+            <option value="">全部匹配度</option>
+            <option value="90">≥ 90%</option>
+            <option value="80">≥ 80%</option>
+            <option value="70">≥ 70%</option>
+          </select>
+        </div>
+        <div class="result-meta"><span id="resultCount">0</span> 个机会</div>
+        <div id="opportunityGrid" class="card-grid"></div>
+      </section>
+
+      <section id="profileView" class="view">
+        <div class="profile-layout">
+          <form id="profileForm" class="panel form-panel">
+            <div class="panel-head">
+              <div>
+                <div class="section-kicker">MATCHING PROFILE</div>
+                <h2>个人申请背景</h2>
+              </div>
+              <button type="submit" class="primary-btn">保存并重算匹配</button>
+            </div>
+            <div class="form-grid">
+              <label>申请类型<textarea id="applicationType" rows="2"></textarea></label>
+              <label>研究方向（每行一个）<textarea id="researchDirections" rows="5"></textarea></label>
+              <label>检索关键词（每行一个）<textarea id="keywords" rows="6"></textarea></label>
+              <label>教育背景<textarea id="educationBackground" rows="5"></textarea></label>
+              <label class="full">科研经历<textarea id="researchExperience" rows="7"></textarea></label>
+              <label>目标国家/地区（每行一个）<textarea id="targetRegions" rows="5"></textarea></label>
+              <label>目标学校、实验室和导师（每行一个）<textarea id="targetGroups" rows="5"></textarea></label>
+              <label class="full">重点关注或参考网站（每行一个）<textarea id="referenceSites" rows="6"></textarea></label>
+            </div>
+          </form>
+
+          <aside class="panel profile-note">
+            <div class="section-kicker">SCORING RULE</div>
+            <h3>匹配度如何计算</h3>
+            <p>本地页面会根据研究方向、关键词、目标地区和目标课题组进行透明的规则评分。每日检索脚本也使用同一套关键词体系。</p>
+            <ul>
+              <li>研究关键词重合度</li>
+              <li>中性原子 / Rydberg / tweezer 核心词额外加权</li>
+              <li>实验 AMO / laser / optics / hardware 与现有技能重合</li>
+              <li>目标地区与目标组命中</li>
+            </ul>
+            <div class="warning">注意：自动评分只用于排序，不代表导师录取概率。</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="historyView" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="section-kicker">DAILY SEARCH LOG</div>
+              <h2>每日检索记录</h2>
+            </div>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card large">
+      <button class="modal-close" data-close-modal>×</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <div id="addModal" class="modal hidden">
+    <div class="modal-backdrop" data-close-add></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-add>×</button>
+      <div class="section-kicker">MANUAL ENTRY</div>
+      <h2>添加机会</h2>
+      <form id="addForm" class="add-form">
+        <label>项目名称<input name="title" required /></label>
+        <label>学校 / 研究机构<input name="institution" required /></label>
+        <div class="two-col">
+          <label>国家<input name="country" /></label>
+          <label>城市<input name="city" /></label>
+        </div>
+        <label>导师 / 实验室<input name="supervisor_lab" /></label>
+        <label>研究方向（逗号分隔）<input name="research_direction" /></label>
+        <label>截止日期<input name="deadline" placeholder="例如 2027-01-15；未知则留空" /></label>
+        <label>原始来源链接<input name="source_url" type="url" required /></label>
+        <label>备注<textarea name="status_note" rows="4"></textarea></label>
+        <button class="primary-btn" type="submit">保存</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+window.SEED_PROFILE = {
+  "application_type": "欧洲全奖/岗位制实验物理 PhD，优先 2027 入学",
+  "research_directions": [
+    "neutral-atom quantum computing",
+    "Rydberg atom arrays",
+    "optical tweezers",
+    "ultracold atoms",
+    "Rydberg-mediated quantum gates",
+    "quantum hardware",
+    "atom-photon interfaces",
+    "quantum sensing"
+  ],
+  "keywords": [
+    "Rydberg",
+    "neutral atom",
+    "optical tweezer",
+    "ultracold atom",
+    "quantum computing",
+    "quantum processor",
+    "atom array",
+    "quantum hardware",
+    "laser cooling",
+    "quantum simulation",
+    "atomic physics",
+    "AMO"
+  ],
+  "education_background": "Physics Master's student; expected graduation 2027. Experimental atomic physics background.",
+  "research_experience": "Rb Rydberg EIT and Autler-Townes spectroscopy; 780/480 nm laser systems; laser frequency stabilization; free-space optical alignment and polarization control; Rydberg atom-microwave interactions; atomic superheterodyne microwave-field measurement; open Fabry-Pérot microwave resonator; HFSS/VNA; optical/RF hardware integration and quantitative analysis.",
+  "target_regions": [
+    "Germany",
+    "Switzerland",
+    "Netherlands",
+    "France",
+    "Austria",
+    "United Kingdom",
+    "Italy",
+    "Denmark",
+    "Sweden"
+  ],
+  "target_groups": [
+    "ETH Zürich Experimental Quantum Engineering",
+    "MPQ / LMU neutral-atom groups",
+    "University of Stuttgart Rydberg Quantum Computing",
+    "MUNIQC-Atoms",
+    "University of Strathclyde Rydberg Atom Quantum Technologies"
+  ],
+  "reference_sites": [
+    "https://euraxess.ec.europa.eu/jobs",
+    "https://www.academictransfer.com/en/",
+    "https://academicpositions.com/",
+    "https://www.findaphd.com/",
+    "official university/research-group vacancy pages"
+  ]
+};
+
+window.SEED_OPPORTUNITIES = [
+  {
+    "id": "tue-kat1-phd-2026",
+    "type": "明确岗位",
+    "title": "PhD in photonic integration and qubit hardware development for quantum computing",
+    "institution": "Eindhoven University of Technology (TU/e)",
+    "country": "Netherlands",
+    "city": "Eindhoven",
+    "supervisor_lab": "Servaas Kokkelmans / CQT / KAT-1",
+    "research_direction": [
+      "neutral-atom quantum computing",
+      "Rydberg interactions",
+      "Rb/Sr",
+      "integrated photonics",
+      "quantum hardware"
+    ],
+    "deadline": "2026-09-30",
+    "first_found": "2026-09-12",
+    "match_score": 96,
+    "open_state": "开放",
+    "application_status": "已提交",
+    "status_note": "已完成套磁并通过 Grade/Varbi 正式提交。",
+    "description": "TU/e 的超冷原子实验室正在开发基于 Rydberg 相互作用的中性原子量子计算平台，岗位聚焦量子比特硬件开发与集成光子学。",
+    "requirements": "正式岗位页面要求以申请系统为准；已完成申请。",
+    "source_url": "https://tue.varbi.com/pl/what%3Ajob/jobID%3A963525/",
+    "source_name": "TU/e official vacancy",
+    "source_verified": true,
+    "last_checked": "2026-09-15",
+    "contact_email": "s.kokkelmans@tue.nl",
+    "application_url": "https://tue.varbi.com/en/apply/positionquick/963525/",
+    "funding": "€3,204–€4,051/月（官方岗位公布区间）",
+    "duration": "来源未说明",
+    "platform": "TU/e Coherence and Quantum Technology (CQT) / KAT-1"
+  },
+  {
+    "id": "eth-viebahn-aqp-2026",
+    "type": "明确岗位",
+    "title": "Doctoral Position in neutral-atom quantum computing",
+    "institution": "ETH Zürich",
+    "country": "Switzerland",
+    "city": "Zurich",
+    "supervisor_lab": "Konrad Viebahn / Atom Quantum Processing (AQP)",
+    "research_direction": [
+      "ultracold neutral atoms",
+      "Rb-85",
+      "optical lattices",
+      "collisional gates",
+      "quantum computing"
+    ],
+    "deadline": "滚动至招满",
+    "first_found": "2026-09-12",
+    "match_score": 91,
+    "open_state": "开放",
+    "application_status": "已提交",
+    "status_note": "已套磁并完成 ETH 正式申请。",
+    "description": "建设新的超冷 Rb 原子量子处理实验室，涵盖激光冷却、俘获、成像、UHV 与实验控制。",
+    "requirements": "MSc 或接近完成；实验/量子工程相关背景；申请材料包括 1 页 cover letter、CV、成绩单及两位推荐人联系方式。",
+    "source_url": "https://www.jobs.ethz.ch/job/view/JOPG_ethz_VICQKrWgFLEoyEPTP7",
+    "source_name": "ETH Zürich official jobs",
+    "source_verified": true,
+    "last_checked": "2026-09-15",
+    "contact_email": "viebahnk@phys.ethz.ch",
+    "application_url": "https://www.jobs.ethz.ch/job/view/JOPG_ethz_VICQKrWgFLEoyEPTP7",
+    "funding": "ETH 博士雇员制；该岗位页未记录具体薪资数值",
+    "duration": "固定期限；具体年限以官方岗位/合同为准",
+    "platform": "ETH Institute for Quantum Electronics / D-PHYS · Atom Quantum Processing"
+  },
+  {
+    "id": "eth-xu-eqe-group",
+    "type": "课题组机会",
+    "title": "PhD opportunities in Experimental Quantum Engineering",
+    "institution": "ETH Zürich",
+    "country": "Switzerland",
+    "city": "Zurich",
+    "supervisor_lab": "Wenchao Xu / Experimental Quantum Engineering",
+    "research_direction": [
+      "Rydberg atoms",
+      "neutral atoms",
+      "quantum computation",
+      "quantum optics",
+      "quantum hardware"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 96,
+    "open_state": "开放",
+    "application_status": "已联系导师",
+    "status_note": "已发送套磁邮件。官网要求 PhD applicant 邮件提供动机说明、最新版 CV（含 2–3 位推荐人及 publication list）和成绩单。",
+    "description": "EQE 组欢迎相关领域 PhD 申请者，实验 AMO、电子电路/光学系统设计、量子光学与编程经验均为加分项。",
+    "requirements": "Brief motivation; up-to-date CV with 2–3 references and publication list if applicable; academic transcript for PhD applicants.",
+    "source_url": "https://eqe.ethz.ch/the-group/open-positions/open-position-phd.html",
+    "source_name": "ETH EQE official open positions",
+    "source_verified": true,
+    "last_checked": "2026-09-12",
+    "contact_email": "wencxu@phys.ethz.ch",
+    "application_url": "mailto:wencxu@phys.ethz.ch",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "ETH Experimental Quantum Engineering · Rydberg / neutral atoms / quantum interconnects"
+  },
+  {
+    "id": "mpq-foelling-rydyb",
+    "type": "明确岗位",
+    "title": "PhD position – Ryd-Yb tweezer array",
+    "institution": "Max Planck Institute of Quantum Optics / LMU",
+    "country": "Germany",
+    "city": "来源未说明",
+    "supervisor_lab": "Simon Fölling / Ryd-Yb tweezer array",
+    "research_direction": [
+      "171Yb",
+      "optical tweezers",
+      "Rydberg interactions",
+      "quantum computing",
+      "quantum simulation"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 95,
+    "open_state": "开放",
+    "application_status": "已联系导师",
+    "status_note": "已发送套磁邮件，附 CV + Research Summary。",
+    "description": "新建 171Yb optical tweezer array 平台，通过 Rydberg 态诱导原子间相互作用，面向量子计算与量子模拟。",
+    "requirements": "来源未说明",
+    "source_url": "https://www.mpq.mpg.de/6859879/ryd-yb-tweezer-array",
+    "source_name": "MPQ official project page",
+    "source_verified": true,
+    "last_checked": "2026-09-12",
+    "contact_email": "simon.foelling@lmu.de",
+    "application_url": "https://www.mpq.mpg.de/6859879/ryd-yb-tweezer-array",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "MPQ / LMU · 171Yb optical tweezers + Rydberg"
+  },
+  {
+    "id": "mpq-aidelsburger-yb",
+    "type": "明确岗位",
+    "title": "PhD position – Yb hybrid tweezer-lattice",
+    "institution": "Max Planck Institute of Quantum Optics / LMU",
+    "country": "Germany",
+    "city": "来源未说明",
+    "supervisor_lab": "Monika Aidelsburger / Yb hybrid tweezer-lattice",
+    "research_direction": [
+      "ultracold Yb",
+      "optical tweezers",
+      "optical lattices",
+      "quantum simulation",
+      "lattice gauge theories"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 86,
+    "open_state": "开放",
+    "application_status": "已联系导师",
+    "status_note": "已发送套磁邮件。",
+    "description": "面向超冷费米 Yb 的量子模拟实验平台，将 optical lattice 与 tweezer array 结合实现局域控制。",
+    "requirements": "来源未说明",
+    "source_url": "https://www.mpq.mpg.de/6859312/yb-hybrid-tweezer-lattice",
+    "source_name": "MPQ official project page",
+    "source_verified": true,
+    "last_checked": "2026-09-12"
+  },
+  {
+    "id": "stuttgart-meinert-rydberg-qc",
+    "type": "明确岗位",
+    "title": "PhD openings – Rydberg Quantum Computer",
+    "institution": "University of Stuttgart",
+    "country": "Germany",
+    "city": "Stuttgart",
+    "supervisor_lab": "Florian Meinert / Tilman Pfau",
+    "research_direction": [
+      "Rydberg atoms",
+      "optical tweezers",
+      "neutral-atom quantum computing",
+      "active optics",
+      "control engineering"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 94,
+    "open_state": "开放",
+    "application_status": "已联系导师",
+    "status_note": "已向 Florian Meinert 发送套磁邮件。",
+    "description": "项目目标是实现数百个独立控制 Rydberg 原子的量子计算演示机，官网明确有 PhD/Postdoc openings。",
+    "requirements": "偏好 atom trapping、complex control engineering 或 active optics 的强背景。",
+    "source_url": "https://www.pi5.uni-stuttgart.de/research/rydberg-quantum-computer/",
+    "source_name": "University of Stuttgart official group page",
+    "source_verified": true,
+    "last_checked": "2026-09-12",
+    "contact_email": "f.meinert@physik.uni-stuttgart.de",
+    "application_url": "https://www.pi5.uni-stuttgart.de/research/rydberg-quantum-computer/",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "University of Stuttgart PI5 / QRYD · Rydberg quantum processor"
+  },
+  {
+    "id": "mpq-zeiher-mqv-route",
+    "type": "课题组机会",
+    "title": "Potential PhD host via fellowship route",
+    "institution": "LMU / Max Planck Institute of Quantum Optics",
+    "country": "Germany",
+    "city": "来源未说明",
+    "supervisor_lab": "Johannes Zeiher",
+    "research_direction": [
+      "neutral atom arrays",
+      "Rydberg interactions",
+      "quantum computing",
+      "quantum simulation"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 90,
+    "open_state": "暂无直接岗位",
+    "application_status": "已联系导师",
+    "status_note": "导师已回复：目前没有直接 position；建议关注 Munich Quantum Valley fellowship，获得 fellowship 后可能在其组读博。",
+    "description": "这是导师回复形成的潜在 host 路线，不应视为当前公开 vacancy。",
+    "requirements": "取决于 fellowship 官方要求；本条不自行推断。",
+    "source_url": "https://www.munich-quantum-valley.de/education/doctoral-fellowships",
+    "source_name": "Munich Quantum Valley fellowship",
+    "source_verified": true,
+    "last_checked": "2026-09-12"
+  },
+  {
+    "id": "institut-optique-browaeys-group",
+    "type": "课题组机会",
+    "title": "Rydberg atom arrays / quantum simulation group inquiry",
+    "institution": "Institut d'Optique / CNRS",
+    "country": "France",
+    "city": "来源未说明",
+    "supervisor_lab": "Antoine Browaeys / Thierry Lahaye",
+    "research_direction": [
+      "Rb Rydberg arrays",
+      "optical tweezers",
+      "quantum simulation",
+      "neutral atoms"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 91,
+    "open_state": "来源未说明",
+    "application_status": "已联系导师",
+    "status_note": "已发送套磁邮件；当前 tracker 未验证到明确 2027 PhD vacancy。",
+    "description": "高匹配研究组机会；当前不把未验证的招生信息标成正式岗位。",
+    "requirements": "来源未说明",
+    "source_url": "https://www.lcf.institutoptique.fr/groupes/optique-quantique/thematiques/systemes-mesoscopiques-datomes-en-interaction",
+    "source_name": "Institut d'Optique / LCF official research page",
+    "source_verified": true,
+    "last_checked": "2026-09-12"
+  },
+  {
+    "id": "tuebingen-gross-muniqc",
+    "type": "明确岗位",
+    "title": "Experimental PhD – neutral-atom quantum computing",
+    "institution": "University of Tübingen / MUNIQC-Atoms",
+    "country": "Germany",
+    "city": "Tübingen",
+    "supervisor_lab": "Christian Groß / Quantum Many-Body Physics",
+    "research_direction": [
+      "87Sr",
+      "optical tweezers",
+      "Rydberg excitation",
+      "neutral-atom quantum computing",
+      "laser optics",
+      "electronics"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 96,
+    "open_state": "开放",
+    "application_status": "感兴趣",
+    "status_note": "建议优先套磁。",
+    "description": "MUNIQC-Atoms Tübingen 明确招聘 experimental physics PhD，项目建设 cryogenic Sr tweezer processor，并以 Rydberg excitation 实现纠缠操作。",
+    "requirements": "官网明确偏好 atomic physics、laser optics 和 electronics 经验。",
+    "source_url": "https://muniqc-atoms.munich-quantum-valley.de/partners/tuebingen",
+    "source_name": "MUNIQC-Atoms official partner page",
+    "source_verified": true,
+    "last_checked": "2026-09-15",
+    "contact_email": "christian.gross@uni-tuebingen.de",
+    "application_url": "https://muniqc-atoms.munich-quantum-valley.de/partners/tuebingen",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "MUNIQC-Atoms / Munich Quantum Valley · cryogenic 87Sr tweezer processor"
+  },
+  {
+    "id": "strathclyde-pritchard-group",
+    "type": "课题组机会",
+    "title": "PhD opportunities – Rydberg Atom Quantum Technologies",
+    "institution": "University of Strathclyde",
+    "country": "United Kingdom",
+    "city": "来源未说明",
+    "supervisor_lab": "Jonathan Pritchard / Rydberg Atom Quantum Technologies",
+    "research_direction": [
+      "neutral-atom quantum computing",
+      "Rydberg atoms",
+      "microwave sensing",
+      "dual-species arrays",
+      "quantum error correction"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 97,
+    "open_state": "开放",
+    "application_status": "感兴趣",
+    "status_note": "官方页面明确欢迎联系，并说明有 PhD/PDRA positions。",
+    "description": "兼具 neutral-atom QC 与 Rydberg microwave sensing，与你当前 Rydberg EIT/微波测量背景高度重合。",
+    "requirements": "具体 PhD 要求以联系 PI 后获得的信息为准。",
+    "source_url": "https://umqt.phys.strath.ac.uk/ryd-projects/ryd-main/",
+    "source_name": "University of Strathclyde group page",
+    "source_verified": true,
+    "last_checked": "2026-09-15",
+    "contact_email": "jonathan.pritchard@strath.ac.uk",
+    "application_url": "https://umqt.phys.strath.ac.uk/ryd-projects/ryd-main/",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "Strathclyde Rydberg Atom Quantum Technologies · dual-species arrays / QEC / microwave sensing"
+  },
+  {
+    "id": "durham-cornish-2027",
+    "type": "明确岗位",
+    "title": "Fully funded PhD – Quantum computing with atoms and molecules in optical tweezers",
+    "institution": "Durham University",
+    "country": "United Kingdom",
+    "city": "Durham",
+    "supervisor_lab": "Simon L. Cornish / Cornish Lab",
+    "research_direction": [
+      "optical tweezers",
+      "atoms and molecules",
+      "quantum computing",
+      "ultracold atoms"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 90,
+    "open_state": "开放",
+    "application_status": "感兴趣",
+    "status_note": "官网明确写明 fully funded、2027 年 10 月开始。",
+    "description": "Cornish Lab 2027 intake 的全奖博士项目之一，主题是 optical tweezers 中的原子与分子量子计算。",
+    "requirements": "来源页面未列出完整申请要求，需联系导师确认。",
+    "source_url": "https://www.cornishlabs.uk/join-us",
+    "source_name": "Cornish Lab official join-us page",
+    "source_verified": true,
+    "last_checked": "2026-09-12",
+    "contact_email": "s.l.cornish@durham.ac.uk",
+    "application_url": "https://www.cornishlabs.uk/join-us",
+    "funding": "Fully funded（学费 + stipend；官网未记录具体金额）",
+    "duration": "2027年10月开始；年限来源未说明",
+    "platform": "Durham Cornish Lab · ultracold atoms/molecules + optical tweezers"
+  },
+  {
+    "id": "bonn-hofferberth-group",
+    "type": "课题组机会",
+    "title": "PhD opportunities – ultracold atoms and Rydberg physics",
+    "institution": "University of Bonn",
+    "country": "Germany",
+    "city": "Bonn",
+    "supervisor_lab": "Sebastian Hofferberth / Nonlinear Quantum Optics",
+    "research_direction": [
+      "ultracold atoms",
+      "Rydberg physics",
+      "quantum optics",
+      "superatom",
+      "atom-photon interaction"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 82,
+    "open_state": "开放",
+    "application_status": "感兴趣",
+    "status_note": "组网页明确表示始终欢迎优秀 PhD/Postdoc candidates。",
+    "description": "方向更偏 Rydberg quantum optics 与 ultracold atoms，可作为高质量备选。",
+    "requirements": "申请 PDF 包含 CV、publications list 和 possible recommendations。",
+    "source_url": "https://www.iap.uni-bonn.de/nqo/en/join-us",
+    "source_name": "University of Bonn official group page",
+    "source_verified": true,
+    "last_checked": "2026-09-12",
+    "contact_email": "hofferberth@iap.uni-bonn.de",
+    "application_url": "https://www.iap.uni-bonn.de/nqo/en/join-us",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "University of Bonn Nonlinear Quantum Optics"
+  },
+  {
+    "id": "lens-sr-rydberg-group",
+    "type": "课题组机会",
+    "title": "Sr Rydberg tweezer / quantum simulation opportunities",
+    "institution": "LENS / University of Florence",
+    "country": "Italy",
+    "city": "Florence",
+    "supervisor_lab": "Vladislav Gavryusev / Leonardo Fallani",
+    "research_direction": [
+      "Sr atoms",
+      "optical tweezers",
+      "Rydberg",
+      "quantum simulation",
+      "quantum computation"
+    ],
+    "deadline": "来源未说明",
+    "first_found": "2026-09-12",
+    "match_score": 87,
+    "open_state": "可咨询",
+    "application_status": "感兴趣",
+    "status_note": "官网明确提供 job opportunities 联系方式，但当前页面未给出具体 PhD 截止日期。",
+    "description": "Sr 单原子 optical tweezer 平台，研究目标包含 quantum simulation / computational arrays。",
+    "requirements": "来源未说明",
+    "source_url": "https://quantumgases.lens.unifi.it/exp/sr-rydberg/sr-atoms",
+    "source_name": "LENS QuantumGases official page",
+    "source_verified": true,
+    "last_checked": "2026-09-15",
+    "contact_email": "gavryusev@lens.unifi.it / fallani@lens.unifi.it",
+    "application_url": "https://quantumgases.lens.unifi.it/exp/sr-rydberg",
+    "funding": "来源未说明",
+    "duration": "来源未说明",
+    "platform": "LENS / University of Florence · Sr optical-tweezer neutral-atom platform"
+  },
+{
+  "id": "innsbruck-bernien-praedoc-2026",
+  "type": "明确岗位",
+  "title": "Praedoc (PhD) – Quantum Science Atom-by-Atom",
+  "institution": "University of Innsbruck / IQOQI, Austrian Academy of Sciences",
+  "country": "Austria",
+  "city": "Innsbruck",
+  "supervisor_lab": "Hannes Bernien / BernienLab",
+  "research_direction": [
+    "dual-species Rydberg arrays",
+    "optical tweezers",
+    "neutral-atom quantum computing",
+    "quantum networks",
+    "quantum error correction"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-12",
+  "match_score": 97,
+  "open_state": "开放",
+  "application_status": "感兴趣",
+  "status_note": "官方 IQOQI 页面列出 Praedoc (Diss) opening；建议优先套磁/申请。",
+  "description": "BernienLab 用 optical tweezers 逐原子组装大型量子系统，重点推进双物种 Rydberg arrays、量子计算/模拟和量子网络光子接口。",
+  "requirements": "岗位细节需通过官方岗位入口或联系课题组确认。",
+  "source_url": "https://iqoqi.at/en/research/groups/1004-bernienlab-quantum-science-atom-by-atom",
+  "source_name": "IQOQI official BernienLab page",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "Hannes.Bernien@uibk.ac.at",
+  "application_url": "https://iqoqi.at/en/apply/open-positions",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "IQOQI Innsbruck / Austrian Academy of Sciences + University of Innsbruck"
+},
+{
+  "id": "hamburg-yb-qc-group",
+  "type": "课题组机会",
+  "title": "PhD opportunities – Yb Quantum Computing and Simulation",
+  "institution": "University of Hamburg",
+  "country": "Germany",
+  "city": "Hamburg",
+  "supervisor_lab": "Klaus Sengstock / Christoph Becker / Quantum Gases Group",
+  "research_direction": [
+    "171Yb",
+    "optical tweezers",
+    "Rydberg gates",
+    "neutral-atom quantum computing",
+    "quantum simulation"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-12",
+  "match_score": 94,
+  "open_state": "可咨询",
+  "application_status": "感兴趣",
+  "status_note": "官网明确欢迎 PhD student 随时联系；建议发送 CV + motivation letter + transcript。",
+  "description": "建设 171Yb neutral-atom quantum computing/simulation 平台，包含 optical tweezer arrays、单光子 Rydberg transition、高相干亚稳态和先进激光系统。",
+  "requirements": "CV、meaningful motivation letter、transcript of records，以及愿意提供的其他材料。",
+  "source_url": "https://www.physik.uni-hamburg.de/en/iqp/sengstock/research/ytterbium-quantum-gases.html",
+  "source_name": "University of Hamburg official Yb Quantum Computing page",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "christoph.becker@uni-hamburg.de / sengstock@physnet.uni-hamburg.de",
+  "application_url": "mailto:christoph.becker@uni-hamburg.de",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "University of Hamburg Institute for Quantum Physics · Yb tweezer/Rydberg processor + optical-clock-grade lasers"
+},
+{
+  "id": "darmstadt-quantumguide-phd",
+  "type": "明确岗位",
+  "title": "PhD – Hollow-core fiber atom guide for quantum devices",
+  "institution": "Technical University of Darmstadt",
+  "country": "Germany",
+  "city": "Darmstadt",
+  "supervisor_lab": "Nonlinear & Quantum Optics / QuantumGuide",
+  "research_direction": [
+    "cold atoms",
+    "coherent light-matter interactions",
+    "hollow-core fiber",
+    "quantum devices",
+    "quantum sensing"
+  ],
+  "deadline": "来源未说明；starting as soon as possible",
+  "first_found": "2026-09-12",
+  "match_score": 83,
+  "open_state": "开放",
+  "application_status": "感兴趣",
+  "status_note": "明确岗位，可直接邮件提交单个 PDF；适合作为从室温 Rydberg 向 cold-atom hardware 迁移的高质量 backup。",
+  "description": "QuantERA QuantumGuide 项目开发 hollow-core-fiber cold-atom source，为量子计算、原子钟和量子传感提供跨真空腔原子导引。",
+  "requirements": "MSc Physics；实验 atomic/optical physics；英文；优选 laser cooling 和/或 coherent light-matter interaction。单 PDF：motivation、CV/论文、research interests、BSc/MSc transcripts、2 referees。",
+  "source_url": "https://www.iap.tu-darmstadt.de/nlq/student_projects_nlq/openphd_nlq.en.jsp",
+  "source_name": "TU Darmstadt official open PhD page",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "quantumguide@physik.tu-darmstadt.de",
+  "application_url": "mailto:quantumguide@physik.tu-darmstadt.de",
+  "funding": "TV-TU Darmstadt 75%（BMBF funded）",
+  "duration": "最长 3 年，可延长",
+  "platform": "QuantERA QuantumGuide + TU Darmstadt state-of-the-art laser labs + 欧洲合作网络"
+},
+{
+  "id": "innsbruck-northup-phd",
+  "type": "明确岗位",
+  "title": "PhD opportunities – Quantum Interfaces",
+  "institution": "University of Innsbruck",
+  "country": "Austria",
+  "city": "Innsbruck",
+  "supervisor_lab": "Tracy Northup / Quantum Interfaces",
+  "research_direction": [
+    "quantum interfaces",
+    "atom-photon interaction",
+    "quantum optics",
+    "experimental AMO"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-12",
+  "match_score": 78,
+  "open_state": "开放",
+  "application_status": "感兴趣",
+  "status_note": "官网明确鼓励 PhD 申请；不是纯 neutral-atom QC，但属于很强的实验量子光学 backup。",
+  "description": "Quantum Interfaces 组招收希望在实验室研究基础量子系统的 PhD / postdoc。",
+  "requirements": "邮件：加入动机、1段硕士研究总结、含 references 的 CV；PhD 另附 academic transcript。",
+  "source_url": "https://www.uibk.ac.at/en/exphys/research/quantum-interfaces/open-positions/",
+  "source_name": "University of Innsbruck official Quantum Interfaces open positions",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "application-northup@uibk.ac.at",
+  "application_url": "mailto:application-northup@uibk.ac.at",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "University of Innsbruck Experimental Physics / Innsbruck quantum optics ecosystem / IQOQI"
+},
+{
+  "id": "strasbourg-whitlock-group",
+  "type": "课题组机会",
+  "title": "PhD inquiry – Exotic Quantum Matter / Rydberg quantum computing",
+  "institution": "University of Strasbourg / ISIS / CESQ",
+  "country": "France",
+  "city": "Strasbourg",
+  "supervisor_lab": "Shannon Whitlock / Exotic Quantum Matter",
+  "research_direction": [
+    "ultracold atoms",
+    "Rydberg interactions",
+    "quantum computing",
+    "quantum simulation",
+    "quantum sensing"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-12",
+  "match_score": 91,
+  "open_state": "可咨询",
+  "application_status": "感兴趣",
+  "status_note": "当前未核验到明确 2027 PhD vacancy，但研究高度匹配，适合直接询问 2027 机会。",
+  "description": "Whitlock 组用激光俘获和操控近绝对零度原子，研究 quantum simulation/sensing/computing，并参与欧洲量子研究和博士培养网络。",
+  "requirements": "来源未说明",
+  "source_url": "https://isis.unistra.fr/en/cesq/whitlock-exotic-quantum-matter/",
+  "source_name": "University of Strasbourg / ISIS official group page",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "whitlock@ipcms.unistra.fr",
+  "application_url": "mailto:whitlock@ipcms.unistra.fr",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "CESQ / University of Strasbourg · QMat / MOQS / QUSTEC / aQCess"
+},
+{
+  "id": "stockholm-hennrich-rydberg-ions-2026",
+  "type": "明确岗位",
+  "title": "PhD in Physics – 2D quantum simulations with trapped Rydberg ions",
+  "institution": "Stockholm University",
+  "country": "Sweden",
+  "city": "Stockholm",
+  "supervisor_lab": "Markus Hennrich / Trapped Ion Quantum Technologies",
+  "research_direction": [
+    "trapped Rydberg ions",
+    "quantum simulation",
+    "quantum computing",
+    "microwave control",
+    "quantum sensing"
+  ],
+  "deadline": "2026-09-28",
+  "first_found": "2026-09-12",
+  "match_score": 75,
+  "open_state": "开放",
+  "application_status": "感兴趣",
+  "status_note": "非 neutral-atom 主线，但 Rydberg + microwave + AT/光谱经验可迁移；跨平台 backup。",
+  "description": "ERC Synergy OPEN-2QS 项目下的 Rydberg trapped-ion 2D quantum simulation PhD。",
+  "requirements": "正式要求以 Stockholm University Varbi 招聘页为准。",
+  "source_url": "https://qtech.fysik.su.se/open-positions.html",
+  "source_name": "Stockholm University group official open positions",
+  "source_verified": true,
+  "last_checked": "2026-09-15",
+  "contact_email": "markus.hennrich@fysik.su.se",
+  "application_url": "https://qtech.fysik.su.se/open-positions.html",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "ERC Synergy OPEN-2QS · Stockholm University trapped-ion quantum technologies"
+},
+{
+  "id": "copenhagen-qdev-inquiry",
+  "type": "课题组机会",
+  "title": "General PhD inquiry – Center for Quantum Devices (QDev)",
+  "institution": "University of Copenhagen / Niels Bohr Institute",
+  "country": "Denmark",
+  "city": "Copenhagen",
+  "supervisor_lab": "QDev faculty",
+  "research_direction": [
+    "quantum devices",
+    "quantum information",
+    "experimental quantum systems"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-12",
+  "match_score": 64,
+  "open_state": "可咨询",
+  "application_status": "感兴趣",
+  "status_note": "官网明确长期欢迎 PhD 联系；方向较宽，建议找到具体 neutral-atom/AMO faculty 后定向联系。",
+  "description": "QDev 长期欢迎潜在 PhD 联系 faculty 讨论机会。",
+  "requirements": "具体要求需与相关 faculty 确认。",
+  "source_url": "https://qdev.nbi.ku.dk/positions/",
+  "source_name": "University of Copenhagen QDev official positions",
+  "source_verified": true,
+  "last_checked": "2026-09-12",
+  "contact_email": "lena.jacobsen@nbi.ku.dk（中心行政；具体机会优先联系目标 faculty）",
+  "application_url": "https://qdev.nbi.ku.dk/positions/",
+  "funding": "来源未说明",
+  "duration": "来源未说明",
+  "platform": "Niels Bohr Institute / Center for Quantum Devices"
+},
+{
+  "id": "wigner-bme-microwave-optical-interface-2026",
+  "type": "明确岗位",
+  "title": "PhD – Strong Atom-Photon Coupling and Microwave-to-Optical Conversion in Cavity-Based Interfaces",
+  "institution": "Budapest University of Technology and Economics (BME) / HUN-REN Wigner Research Centre for Physics",
+  "country": "Hungary",
+  "city": "Budapest",
+  "supervisor_lab": "András Dombi / Quantum Optics at Wigner",
+  "research_direction": [
+    "cold atoms",
+    "cavity QED",
+    "microwave-to-optical conversion",
+    "atom-photon interface",
+    "quantum optics"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-15",
+  "match_score": 93,
+  "open_state": "开放/主题已批准",
+  "application_status": "感兴趣",
+  "status_note": "今天新发现。与你的微波-原子相互作用、腔、光学系统和量子接口背景非常贴；建议优先联系导师确认 2026/27 国际申请与资助方式。",
+  "description": "项目目标是构建并表征高效率原子-光子接口，实现微波与光学域之间的相干转换。系统使用冷原子、可移动磁四极阱和单模高精细度光学腔，并结合单光子计数进行状态和转换效率表征。",
+  "requirements": "MSc in Physics；英语；扎实的 Quantum Physics 背景。",
+  "source_url": "https://phd.physics.bme.hu/node/5102",
+  "source_name": "BME Doctoral School of Physical Sciences official topic page",
+  "source_verified": true,
+  "last_checked": "2026-09-15",
+  "contact_email": "dombi.andras@wigner.hun-ren.hu",
+  "application_url": "https://physics.ttk.bme.hu/en/phd-felveteli",
+  "funding": "主题页显示 Stipendium Hungaricum: Yes；具体奖学金金额/录取批次需以 BME/SH 当期公告为准",
+  "duration": "BME Physics PhD 标准学制 4 年（8 semesters）",
+  "platform": "HUN-REN Wigner Research Centre for Physics + BME Doctoral School；cold-atom cavity QED / quantum light-matter interface"
+},
+{
+  "id": "wigner-bme-atomic-magnetometry-2026",
+  "type": "明确岗位",
+  "title": "PhD – Compact Atomic Magnetometry Sensors for Neutral-Atom Quantum Technology",
+  "institution": "Budapest University of Technology and Economics (BME) / HUN-REN Wigner Research Centre for Physics",
+  "country": "Hungary",
+  "city": "Budapest",
+  "supervisor_lab": "András Vukics / Wigner Research Centre for Physics",
+  "research_direction": [
+    "atomic magnetometry",
+    "quantum sensing",
+    "neutral-atom quantum computing support",
+    "experimental optics",
+    "laser systems",
+    "data acquisition"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-15",
+  "match_score": 88,
+  "open_state": "开放/主题已批准",
+  "application_status": "感兴趣",
+  "status_note": "今天新发现。不是直接做 Rydberg gate，但目标应用明确是 neutral-atom quantum computing 的磁场监测/校准；你的原子测量、光学、RF 和硬件集成背景匹配。",
+  "description": "开发用于量子器件附近精密磁场监控与校准的紧凑原子磁强计传感头，包含光学和电子子系统、原子传感元件紧凑集成、校准及信号处理。项目明确把 neutral-atom quantum computer / simulator 作为主要应用目标之一。",
+  "requirements": "MSc in Physics 或相关方向；量子力学与原子物理背景；实验光学、激光系统或数据采集/编程经验为加分项。",
+  "source_url": "https://phd.physics.bme.hu/node/5084?language=en",
+  "source_name": "BME Doctoral School of Physical Sciences official topic page",
+  "source_verified": true,
+  "last_checked": "2026-09-15",
+  "contact_email": "vukics.andras@wigner.hun-ren.hu",
+  "application_url": "https://physics.ttk.bme.hu/en/phd-felveteli",
+  "funding": "该主题标注 Stipendium Hungaricum: No；其他国家/学校奖学金或项目资助来源未说明",
+  "duration": "BME Physics PhD 标准学制 4 年（8 semesters）",
+  "platform": "HUN-REN Wigner Research Centre for Physics + BME；atomic quantum sensing / neutral-atom hardware support"
+},
+{
+  "id": "wigner-bme-cavity-qed-cold-atoms-2026",
+  "type": "明确岗位",
+  "title": "PhD – Experimental Cavity QED with Cold Atoms",
+  "institution": "Budapest University of Technology and Economics (BME) / HUN-REN Wigner Research Centre for Physics",
+  "country": "Hungary",
+  "city": "Budapest",
+  "supervisor_lab": "Dávid Nagy / Péter Domokos / Quantum Optics Laboratory",
+  "research_direction": [
+    "cold rubidium atoms",
+    "cavity QED",
+    "high-finesse cavity",
+    "quantum light-matter interaction",
+    "homodyne detection"
+  ],
+  "deadline": "来源未说明",
+  "first_found": "2026-09-15",
+  "match_score": 86,
+  "open_state": "开放/主题已批准",
+  "application_status": "感兴趣",
+  "status_note": "今天新发现。非常适合作为从室温 Rb Rydberg 转向 cold-atom / cavity-QED 平台的迁移型机会。",
+  "description": "Wigner Quantum Optics Laboratory 使用激光冷却的 Rb 原子与高精细度光学腔构建强耦合量子光-物质接口。博士期间将升级冷却技术并实现新的 homodyne detection scheme，研究集体原子态和 atom-cavity polariton modes。",
+  "requirements": "Quantum physics、atomic physics、optics fundamentals、electronics、Python programming。",
+  "source_url": "https://phd.physics.bme.hu/node/5080?language=en",
+  "source_name": "BME Doctoral School of Physical Sciences official topic page",
+  "source_verified": true,
+  "last_checked": "2026-09-15",
+  "contact_email": "nagy.david@wigner.hu",
+  "application_url": "https://physics.ttk.bme.hu/en/phd-felveteli",
+  "funding": "该主题标注 Stipendium Hungaricum: No；其他资助来源未说明",
+  "duration": "BME Physics PhD 标准学制 4 年（8 semesters）",
+  "platform": "HUN-REN Wigner Quantum Optics Laboratory + BME；laser-cooled Rb + high-finesse cavity QED"
+},
+{
+  "id": "aqt-cdt-2027-watch",
+  "type": "未来批次/监控",
+  "title": "AQT CDT 2027/28 – Quantum Technology PhD Projects (watchlist)",
+  "institution": "Applied Quantum Technologies CDT (UK consortium)",
+  "country": "United Kingdom",
+  "city": "Multiple UK universities",
+  "supervisor_lab": "Multiple supervisors; includes Jonathan Pritchard / Strathclyde neutral-atom projects",
+  "research_direction": [
+    "quantum technologies",
+    "neutral-atom quantum computing",
+    "Rydberg atoms",
+    "quantum sensing",
+    "industry training"
+  ],
+  "deadline": "2027/28 项目预计 2026年11月开放；当前申请未开放",
+  "first_found": "2026-09-15",
+  "match_score": 90,
+  "open_state": "未来开放",
+  "application_status": "感兴趣",
+  "status_note": "官方页面明确：2026/27 已关闭，2027/28 项目将在 2026年11月发布并开放申请。建议列入重点提醒。",
+  "description": "英国 Applied Quantum Technologies CDT 提供跨校量子技术博士培养。上一批项目中包含 Jonathan Pritchard 的 programmable neutral-atom arrays 项目，使用 Strathclyde SQuAre neutral-atom processor 开展 QEC 和 fault-tolerant algorithms。",
+  "requirements": "2027/28 具体要求来源尚未公布；待 2026年11月官方更新。",
+  "source_url": "https://www.aqt.ac.uk/programme/phd-projects/",
+  "source_name": "AQT CDT official PhD projects page",
+  "source_verified": true,
+  "last_checked": "2026-09-15",
+  "contact_email": "来源未说明（2027/28 具体项目尚未公布）",
+  "application_url": "https://www.aqt.ac.uk/programme/phd-projects/",
+  "funding": "2027/28 具体资助尚未公布；CDT 项目通常按具体项目/名额说明",
+  "duration": "来源未说明（2027/28 批次尚未公布）",
+  "platform": "UK Applied Quantum Technologies CDT；跨大学 + 产业合作 + quantum training school"
+}
+];
+
+window.SEARCH_LOG = [
+  {
+    "date": "2026-09-15",
+    "queries": 10,
+    "new_items": 4,
+    "verified_links": 10,
+    "invalid_links": 0,
+    "note": "今日更新：新增 Wigner/BME 微波-光学转换、原子磁强计、cold-atom cavity QED 三个 2026/27 PhD 主题，并加入 AQT CDT 2027/28 十一月开放提醒；复核 TU/e、ETH、Tübingen、Strathclyde、LENS、Stockholm 等状态。"
+  },
+  {
+    "date": "2026-09-12",
+    "new_items": 20,
+    "verified_links": 19,
+    "invalid_links": 0,
+    "note": "更新总览：新增 Bernien、Hamburg Yb、TU Darmstadt QuantumGuide、Northup、Whitlock、Stockholm Rydberg ions、Copenhagen QDev，并补充联系邮箱、申请入口、资助和科研平台字段。"
+  }
+];
+
+const STATUSES = ["感兴趣","准备联系导师","已联系导师","准备申请材料","已提交","等待结果","Offer","Rejected","放弃申请"];
+const storageKey = "phdTrackerStateV1";
+const profileKey = "phdTrackerProfileV1";
+
+let opportunities = structuredClone(window.SEED_OPPORTUNITIES || []);
+let profile = structuredClone(window.SEED_PROFILE || {});
+let searchLog = structuredClone(window.SEARCH_LOG || []);
+
+function loadLocalState(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    if(Array.isArray(saved.override)) {
+      opportunities = saved.override;
+    } else {
+      const byId = saved.byId || {};
+      opportunities = opportunities.map(o => ({...o, ...(byId[o.id] || {})}));
+      if(Array.isArray(saved.manual)) opportunities.push(...saved.manual);
+    }
+    const p = JSON.parse(localStorage.getItem(profileKey) || "null");
+    if(p) profile = p;
+  }catch(e){ console.warn("Local state load failed", e); }
+}
+function saveState(){
+  const seedIds = new Set((window.SEED_OPPORTUNITIES || []).map(o=>o.id));
+  const byId = {};
+  const manual = [];
+  opportunities.forEach(o=>{
+    if(seedIds.has(o.id)) byId[o.id] = {application_status:o.application_status,status_note:o.status_note,match_score:o.match_score};
+    else manual.push(o);
+  });
+  localStorage.setItem(storageKey, JSON.stringify({byId,manual}));
+}
+function saveProfile(){localStorage.setItem(profileKey, JSON.stringify(profile));}
+function esc(s){return String(s ?? "").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
+function sourceLabel(o){return o.source_verified ? "来源已核验" : "待再次核验";}
+function statusOptions(current){return STATUSES.map(s=>`<option ${s===current?'selected':''}>${s}</option>`).join('');}
+function formatDirections(arr){return (arr||[]).slice(0,4).map(x=>`<span class="tag">${esc(x)}</span>`).join('');}
+function cardHTML(o, compact=false){
+  return `<article class="opp-card" data-id="${esc(o.id)}">
+    <div class="card-top"><div class="card-type">${esc(o.type)}</div><div class="verify ${o.source_verified?'ok':''}">${sourceLabel(o)}</div></div>
+    <div>
+      <div class="opp-title">${esc(o.title)}</div>
+      <div class="inst">${esc(o.institution)} · ${esc(o.country)}${o.city?` · ${esc(o.city)}`:''}</div>
+    </div>
+    <div class="tag-row">${formatDirections(o.research_direction)}</div>
+    <div class="card-meta">
+      <div>
+        <div class="deadline"><span>截止日期</span>${esc(o.deadline || '来源未说明')}</div>
+        <div class="deadline" style="margin-top:7px"><span>资助</span>${esc(o.funding || '来源未说明')}</div>
+      </div>
+      <div class="match-badge">${Number(o.match_score||0)}%</div>
+    </div>
+    ${compact ? '' : `<select class="status-select" data-status-id="${esc(o.id)}">${statusOptions(o.application_status)}</select>
+    <div class="card-actions"><button data-detail="${esc(o.id)}">查看详情</button><a class="source-btn" href="${esc(o.source_url)}" target="_blank" rel="noopener">原始来源 ↗</a></div>`}
+  </article>`;
+}
+function renderDashboard(){
+  const submitted = opportunities.filter(o=>["已提交","等待结果","Offer","Rejected"].includes(o.application_status)).length;
+  const contacted = opportunities.filter(o=>["已联系导师","准备申请材料","已提交","等待结果","Offer","Rejected"].includes(o.application_status)).length;
+  const high = opportunities.filter(o=>Number(o.match_score)>=90 && !["Rejected","放弃申请"].includes(o.application_status)).length;
+  document.getElementById('submittedCount').textContent = submitted;
+  document.getElementById('contactedCount').textContent = contacted;
+  document.getElementById('highMatchCount').textContent = high;
+  document.getElementById('heroTags').innerHTML = (profile.research_directions||[]).slice(0,4).map(x=>`<span class="mini-tag">${esc(x)}</span>`).join('');
+
+  const priority = opportunities.filter(o=>!["已提交","等待结果","Offer","Rejected","放弃申请"].includes(o.application_status))
+    .sort((a,b)=>Number(b.match_score)-Number(a.match_score)).slice(0,4);
+  document.getElementById('priorityGrid').innerHTML = priority.length ? priority.map(o=>cardHTML(o,true)).join('') : '<div class="empty">暂无待处理机会</div>';
+  document.querySelectorAll('#priorityGrid .opp-card').forEach(el=>el.addEventListener('click',()=>openDetail(el.dataset.id)));
+
+  const counts = Object.fromEntries(STATUSES.map(s=>[s,0]));
+  opportunities.forEach(o=>counts[o.application_status]=(counts[o.application_status]||0)+1);
+  document.getElementById('pipeline').innerHTML = STATUSES.map(s=>`<div class="pipe-item"><div class="pipe-count">${counts[s]||0}</div><div class="pipe-label">${s}</div></div>`).join('');
+}
+function populateFilters(){
+  document.getElementById('statusFilter').innerHTML = '<option value="">全部状态</option>'+STATUSES.map(s=>`<option>${s}</option>`).join('');
+  const countries=[...new Set(opportunities.map(o=>o.country).filter(Boolean))].sort();
+  document.getElementById('countryFilter').innerHTML='<option value="">全部国家</option>'+countries.map(s=>`<option>${esc(s)}</option>`).join('');
+  const types=[...new Set(opportunities.map(o=>o.type).filter(Boolean))];
+  document.getElementById('typeFilter').innerHTML='<option value="">全部类型</option>'+types.map(s=>`<option>${esc(s)}</option>`).join('');
+}
+function renderOpportunities(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const st=document.getElementById('statusFilter').value;
+  const co=document.getElementById('countryFilter').value;
+  const ty=document.getElementById('typeFilter').value;
+  const m=Number(document.getElementById('matchFilter').value||0);
+  const list=opportunities.filter(o=>{
+    const hay=[o.title,o.institution,o.country,o.city,o.supervisor_lab,...(o.research_direction||[])].join(' ').toLowerCase();
+    return (!q||hay.includes(q))&&(!st||o.application_status===st)&&(!co||o.country===co)&&(!ty||o.type===ty)&&(!m||Number(o.match_score)>=m);
+  }).sort((a,b)=>Number(b.match_score)-Number(a.match_score));
+  document.getElementById('resultCount').textContent=list.length;
+  document.getElementById('opportunityGrid').innerHTML=list.length?list.map(o=>cardHTML(o)).join(''):'<div class="empty">没有符合当前筛选条件的机会</div>';
+  document.querySelectorAll('[data-detail]').forEach(b=>b.addEventListener('click',()=>openDetail(b.dataset.detail)));
+  document.querySelectorAll('[data-status-id]').forEach(sel=>sel.addEventListener('change',e=>{
+    const o=opportunities.find(x=>x.id===e.target.dataset.statusId); if(o){o.application_status=e.target.value;saveState();renderDashboard();}
+  }));
+}
+function openDetail(id){
+  const o=opportunities.find(x=>x.id===id); if(!o)return;
+  document.getElementById('detailContent').innerHTML=`
+    <div class="section-kicker">${esc(o.type)} · ${esc(o.open_state)}</div>
+    <div class="detail-title">${esc(o.title)}</div>
+    <div class="detail-sub">${esc(o.institution)} · ${esc(o.supervisor_lab)}</div>
+    <div class="detail-grid">
+      <div class="detail-box"><div class="k">国家 / 城市</div><div class="v">${esc(o.country)} / ${esc(o.city||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">匹配程度</div><div class="v">${esc(o.match_score)}%</div></div>
+      <div class="detail-box"><div class="k">截止日期</div><div class="v">${esc(o.deadline||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">系统首次检索</div><div class="v">${esc(o.first_found||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">申请状态</div><div class="v">${esc(o.application_status)}</div></div>
+      <div class="detail-box"><div class="k">来源核验</div><div class="v">${esc(sourceLabel(o))} · ${esc(o.last_checked||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">联系邮箱</div><div class="v">${esc(o.contact_email||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">工资 / 奖学金</div><div class="v">${esc(o.funding||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">合同 / 博士年限</div><div class="v">${esc(o.duration||'来源未说明')}</div></div>
+      <div class="detail-box"><div class="k">科研 / 培养平台</div><div class="v">${esc(o.platform||'来源未说明')}</div></div>
+    </div>
+    <div class="detail-section"><h3>申请入口</h3><p>${esc(o.application_url||'来源未说明')}</p>${o.application_url?`<a class="source-link" href="${esc(o.application_url)}" target="_blank" rel="noopener">打开申请入口 ↗</a>`:''}</div>
+    <div class="detail-section"><h3>研究方向</h3><div class="tag-row">${formatDirections(o.research_direction)}</div></div>
+    <div class="detail-section"><h3>项目内容</h3><p>${esc(o.description||'来源未说明')}</p></div>
+    <div class="detail-section"><h3>申请要求</h3><p>${esc(o.requirements||'来源未说明')}</p></div>
+    <div class="detail-section"><h3>个人进度备注</h3><p>${esc(o.status_note||'—')}</p></div>
+    <div class="detail-section"><h3>原始来源</h3><p>${esc(o.source_name||'来源未说明')}</p><a class="source-link" href="${esc(o.source_url)}" target="_blank" rel="noopener">打开官方 / 原始来源 ↗</a></div>`;
+  document.getElementById('detailModal').classList.remove('hidden');
+}
+function renderProfile(){
+  const set=(id,val)=>document.getElementById(id).value=Array.isArray(val)?val.join('\n'):(val||'');
+  set('applicationType',profile.application_type);set('researchDirections',profile.research_directions);set('keywords',profile.keywords);set('educationBackground',profile.education_background);set('researchExperience',profile.research_experience);set('targetRegions',profile.target_regions);set('targetGroups',profile.target_groups);set('referenceSites',profile.reference_sites);
+}
+function calcScore(o){
+  const text=[o.title,o.institution,o.supervisor_lab,o.description,...(o.research_direction||[])].join(' ').toLowerCase();
+  const kws=(profile.keywords||[]).map(x=>x.toLowerCase());
+  let score=48;
+  kws.forEach(k=>{if(text.includes(k))score+=3.2});
+  ["rydberg","neutral atom","optical tweezer","quantum computing"].forEach(k=>{if(text.includes(k))score+=5});
+  (profile.target_regions||[]).forEach(r=>{if((o.country||'').toLowerCase()===r.toLowerCase())score+=2});
+  (profile.target_groups||[]).forEach(g=>{const parts=g.toLowerCase().split(/\s+|\/|-/).filter(x=>x.length>4);if(parts.some(p=>text.includes(p)))score+=2});
+  return Math.max(50,Math.min(99,Math.round(score)));
+}
+function renderHistory(){
+  document.getElementById('historyList').innerHTML=(searchLog||[]).slice().reverse().map(r=>`<div class="history-row">
+    <div class="history-date">${esc(r.date)}</div><div class="history-stat"><strong>${esc(r.new_items||0)}</strong><br>新增</div><div class="history-stat"><strong>${esc(r.verified_links||0)}</strong><br>已验链</div><div class="history-stat"><strong>${esc(r.invalid_links||0)}</strong><br>失效</div><div class="history-note">${esc(r.note||'')}</div>
+  </div>`).join('');
+}
+function switchView(name){
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active-view'));
+  document.getElementById(name+'View').classList.add('active-view');
+  const titles={dashboard:'博士申请总览',opportunities:'PhD 信息列表',profile:'个人申请背景',history:'每日检索记录'};
+  document.getElementById('pageTitle').textContent=titles[name]||'博士申请机会追踪';
+}
+function slug(){return 'manual-'+Date.now().toString(36)}
+function addOpportunity(fd){
+  const now=new Date().toISOString().slice(0,10);
+  const o={id:slug(),type:'手动添加',title:fd.get('title'),institution:fd.get('institution'),country:fd.get('country')||'来源未说明',city:fd.get('city')||'来源未说明',supervisor_lab:fd.get('supervisor_lab')||'来源未说明',research_direction:(fd.get('research_direction')||'').split(',').map(x=>x.trim()).filter(Boolean),deadline:fd.get('deadline')||'来源未说明',first_found:now,match_score:80,open_state:'待核验',application_status:'感兴趣',status_note:fd.get('status_note')||'',description:'手动添加条目；请通过原始来源核验项目内容。',requirements:'来源未说明',source_url:fd.get('source_url'),source_name:'用户手动添加',source_verified:false,last_checked:'尚未自动核验'};
+  o.match_score=calcScore(o);opportunities.push(o);saveState();populateFilters();renderDashboard();renderOpportunities();
+}
+function exportBackup(){
+  const blob=new Blob([JSON.stringify({profile,opportunities,exported_at:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='phd-tracker-backup.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importBackup(file){
+  const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);if(d.profile)profile=d.profile;if(Array.isArray(d.opportunities))opportunities=d.opportunities;saveProfile();localStorage.setItem(storageKey,JSON.stringify({override:opportunities}));location.reload();}catch(e){alert('导入失败：JSON 格式不正确');}};reader.readAsText(file);
+}
+
+loadLocalState();
+const last=(searchLog||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];document.getElementById('lastSync').textContent='最后检索：'+(last?.date||'—');
+renderDashboard();populateFilters();renderOpportunities();renderProfile();renderHistory();
+document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.go)));
+['searchInput','statusFilter','countryFilter','typeFilter','matchFilter'].forEach(id=>document.getElementById(id).addEventListener('input',renderOpportunities));
+document.querySelectorAll('[data-close-modal]').forEach(x=>x.addEventListener('click',()=>document.getElementById('detailModal').classList.add('hidden')));
+document.getElementById('addOpportunityBtn').addEventListener('click',()=>document.getElementById('addModal').classList.remove('hidden'));
+document.querySelectorAll('[data-close-add]').forEach(x=>x.addEventListener('click',()=>document.getElementById('addModal').classList.add('hidden')));
+document.getElementById('addForm').addEventListener('submit',e=>{e.preventDefault();addOpportunity(new FormData(e.target));e.target.reset();document.getElementById('addModal').classList.add('hidden');});
+document.getElementById('profileForm').addEventListener('submit',e=>{e.preventDefault();const lines=id=>document.getElementById(id).value.split('\n').map(x=>x.trim()).filter(Boolean);profile={application_type:document.getElementById('applicationType').value.trim(),research_directions:lines('researchDirections'),keywords:lines('keywords'),education_background:document.getElementById('educationBackground').value.trim(),research_experience:document.getElementById('researchExperience').value.trim(),target_regions:lines('targetRegions'),target_groups:lines('targetGroups'),reference_sites:lines('referenceSites')};opportunities.forEach(o=>o.match_score=calcScore(o));saveProfile();saveState();renderDashboard();renderOpportunities();alert('已保存背景信息并重新计算匹配度。');});
+document.getElementById('exportBtn').addEventListener('click',exportBackup);
+document.getElementById('importInput').addEventListener('change',e=>e.target.files[0]&&importBackup(e.target.files[0]));
+
+</script>
+</body>
+</html>

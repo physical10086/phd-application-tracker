@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>博士申请机会追踪网站</title>
+  <meta name="description" content="欧洲实验物理 / 中性原子量子计算 PhD 机会追踪与申请进度管理" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">Q</div>
+        <div>
+          <div class="brand-title">PhD Tracker</div>
+          <div class="brand-sub">博士申请机会追踪</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">概览</button>
+        <button class="nav-item" data-view="opportunities">机会列表</button>
+        <button class="nav-item" data-view="profile">个人申请背景</button>
+        <button class="nav-item" data-view="history">检索记录</button>
+      </nav>
+
+      <div class="side-card">
+        <div class="side-card-title">自动更新</div>
+        <div class="status-line"><span class="dot ok"></span><span>GitHub Actions 已配置</span></div>
+        <div class="side-card-copy">部署到 GitHub 后可每日自动搜索、验链、去重并更新数据。</div>
+      </div>
+
+      <div class="side-actions">
+        <button id="exportBtn" class="ghost-btn">导出备份 JSON</button>
+        <label class="ghost-btn file-label">导入备份<input id="importInput" type="file" accept="application/json" /></label>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">EUROPE · EXPERIMENTAL AMO · NEUTRAL ATOMS</div>
+          <h1 id="pageTitle">博士申请总览</h1>
+        </div>
+        <div class="top-actions">
+          <div class="last-sync" id="lastSync">最后检索：—</div>
+          <button id="addOpportunityBtn" class="primary-btn">+ 添加机会</button>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active-view">
+        <div class="hero-grid">
+          <div class="hero-card">
+            <div class="hero-label">当前策略</div>
+            <div class="hero-title">Rydberg → Neutral-Atom Quantum Hardware</div>
+            <div class="hero-copy">优先正式岗位，其次长期开放课题组；所有条目必须保留原始来源，缺失信息显示“来源未说明”。</div>
+            <div class="hero-tags" id="heroTags"></div>
+          </div>
+          <div class="metric-card accent">
+            <div class="metric-label">已提交</div>
+            <div class="metric-value" id="submittedCount">0</div>
+            <div class="metric-sub">正式申请</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">已联系导师</div>
+            <div class="metric-value" id="contactedCount">0</div>
+            <div class="metric-sub">含已回复</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">高匹配机会</div>
+            <div class="metric-value" id="highMatchCount">0</div>
+            <div class="metric-sub">≥ 90%</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">NEXT ACTIONS</div>
+            <h2>下一步最值得处理</h2>
+          </div>
+          <button class="text-btn" data-go="opportunities">查看全部 →</button>
+        </div>
+        <div id="priorityGrid" class="card-grid compact-grid"></div>
+
+        <div class="section-head second">
+          <div>
+            <div class="section-kicker">PIPELINE</div>
+            <h2>申请进度分布</h2>
+          </div>
+        </div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <section id="opportunitiesView" class="view">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <input id="searchInput" type="search" placeholder="搜索项目、学校、导师、方向…" />
+          </div>
+          <select id="statusFilter">
+            <option value="">全部状态</option>
+          </select>
+          <select id="countryFilter"><option value="">全部国家</option></select>
+          <select id="typeFilter"><option value="">全部类型</option></select>
+          <select id="matchFilter">
+            <option value="">全部匹配度</option>
+            <option value="90">≥ 90%</option>
+            <option value="80">≥ 80%</option>
+            <option value="70">≥ 70%</option>
+          </select>
+        </div>
+        <div class="result-meta"><span id="resultCount">0</span> 个机会</div>
+        <div id="opportunityGrid" class="card-grid"></div>
+      </section>
+
+      <section id="profileView" class="view">
+        <div class="profile-layout">
+          <form id="profileForm" class="panel form-panel">
+            <div class="panel-head">
+              <div>
+                <div class="section-kicker">MATCHING PROFILE</div>
+                <h2>个人申请背景</h2>
+              </div>
+              <button type="submit" class="primary-btn">保存并重算匹配</button>
+            </div>
+            <div class="form-grid">
+              <label>申请类型<textarea id="applicationType" rows="2"></textarea></label>
+              <label>研究方向（每行一个）<textarea id="researchDirections" rows="5"></textarea></label>
+              <label>检索关键词（每行一个）<textarea id="keywords" rows="6"></textarea></label>
+              <label>教育背景<textarea id="educationBackground" rows="5"></textarea></label>
+              <label class="full">科研经历<textarea id="researchExperience" rows="7"></textarea></label>
+              <label>目标国家/地区（每行一个）<textarea id="targetRegions" rows="5"></textarea></label>
+              <label>目标学校、实验室和导师（每行一个）<textarea id="targetGroups" rows="5"></textarea></label>
+              <label class="full">重点关注或参考网站（每行一个）<textarea id="referenceSites" rows="6"></textarea></label>
+            </div>
+          </form>
+
+          <aside class="panel profile-note">
+            <div class="section-kicker">SCORING RULE</div>
+            <h3>匹配度如何计算</h3>
+            <p>本地页面会根据研究方向、关键词、目标地区和目标课题组进行透明的规则评分。每日检索脚本也使用同一套关键词体系。</p>
+            <ul>
+              <li>研究关键词重合度</li>
+              <li>中性原子 / Rydberg / tweezer 核心词额外加权</li>
+              <li>实验 AMO / laser / optics / hardware 与现有技能重合</li>
+              <li>目标地区与目标组命中</li>
+            </ul>
+            <div class="warning">注意：自动评分只用于排序，不代表导师录取概率。</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="historyView" class="view">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="section-kicker">DAILY SEARCH LOG</div>
+              <h2>每日检索记录</h2>
+            </div>
+          </div>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card large">
+      <button class="modal-close" data-close-modal>×</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <div id="addModal" class="modal hidden">
+    <div class="modal-backdrop" data-close-add></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-add>×</button>
+      <div class="section-kicker">MANUAL ENTRY</div>
+      <h2>添加机会</h2>
+      <form id="addForm" class="add-form">
+        <label>项目名称<input name="title" required /></label>
+        <label>学校 / 研究机构<input name="institution" required /></label>
+        <div class="two-col">
+          <label>国家<input name="country" /></label>
+          <label>城市<input name="city" /></label>
+        </div>
+        <label>导师 / 实验室<input name="supervisor_lab" /></label>
+        <label>研究方向（逗号分隔）<input name="research_direction" /></label>
+        <label>截止日期<input name="deadline" placeholder="例如 2027-01-15；未知则留空" /></label>
+        <label>原始来源链接<input name="source_url" type="url" required /></label>
+        <label>备注<textarea name="status_note" rows="4"></textarea></label>
+        <button class="primary-btn" type="submit">保存</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="data/profile.js"></script>
+  <script src="data/opportunities.js"></script>
+  <script src="data/search_log.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

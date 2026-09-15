@@ -1,0 +1,54 @@
+window.SEED_PROFILE = {
+  "application_type": "欧洲全奖/岗位制实验物理 PhD，优先 2027 入学",
+  "research_directions": [
+    "neutral-atom quantum computing",
+    "Rydberg atom arrays",
+    "optical tweezers",
+    "ultracold atoms",
+    "Rydberg-mediated quantum gates",
+    "quantum hardware",
+    "atom-photon interfaces",
+    "quantum sensing"
+  ],
+  "keywords": [
+    "Rydberg",
+    "neutral atom",
+    "optical tweezer",
+    "ultracold atom",
+    "quantum computing",
+    "quantum processor",
+    "atom array",
+    "quantum hardware",
+    "laser cooling",
+    "quantum simulation",
+    "atomic physics",
+    "AMO"
+  ],
+  "education_background": "Physics Master's student; expected graduation 2027. Experimental atomic physics background.",
+  "research_experience": "Rb Rydberg EIT and Autler-Townes spectroscopy; 780/480 nm laser systems; laser frequency stabilization; free-space optical alignment and polarization control; Rydberg atom-microwave interactions; atomic superheterodyne microwave-field measurement; open Fabry-Pérot microwave resonator; HFSS/VNA; optical/RF hardware integration and quantitative analysis.",
+  "target_regions": [
+    "Germany",
+    "Switzerland",
+    "Netherlands",
+    "France",
+    "Austria",
+    "United Kingdom",
+    "Italy",
+    "Denmark",
+    "Sweden"
+  ],
+  "target_groups": [
+    "ETH Zürich Experimental Quantum Engineering",
+    "MPQ / LMU neutral-atom groups",
+    "University of Stuttgart Rydberg Quantum Computing",
+    "MUNIQC-Atoms",
+    "University of Strathclyde Rydberg Atom Quantum Technologies"
+  ],
+  "reference_sites": [
+    "https://euraxess.ec.europa.eu/jobs",
+    "https://www.academictransfer.com/en/",
+    "https://academicpositions.com/",
+    "https://www.findaphd.com/",
+    "official university/research-group vacancy pages"
+  ]
+};
