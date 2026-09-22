@@ -1,6 +1,16 @@
 const STATUSES = ["感兴趣","准备联系导师","已联系导师","准备申请材料","已提交","等待结果","Offer","Rejected","放弃申请"];
 const storageKey = "phdTrackerStateV1";
 const profileKey = "phdTrackerProfileV1";
+const migrationKey20260922 = "phdTrackerMigration20260922";
+const contactedMigration20260922 = {
+  "innsbruck-bernien-group":"已联系导师",
+  "darmstadt-birkl-apq-group":"已联系导师",
+  "strathclyde-pritchard-group":"已联系导师",
+  "tuebingen-gross-muniqc":"已联系导师",
+  "paris-lkb-sayrin-rydberg":"已联系导师",
+  "lens-tanzi-yb-tweezers":"已联系导师",
+  "bonn-hofferberth-group":"已联系导师"
+};
 
 let opportunities = structuredClone(window.SEED_OPPORTUNITIES || []);
 let profile = structuredClone(window.SEED_PROFILE || {});
@@ -10,7 +20,10 @@ function loadLocalState(){
   try{
     const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
     if(Array.isArray(saved.override)) {
-      opportunities = saved.override;
+      const seedIds = new Set(opportunities.map(o=>o.id));
+      const overrideById = Object.fromEntries(saved.override.map(o=>[o.id,o]));
+      opportunities = opportunities.map(o=>({...o,...(overrideById[o.id]||{})}));
+      opportunities.push(...saved.override.filter(o=>!seedIds.has(o.id)));
     } else {
       const byId = saved.byId || {};
       opportunities = opportunities.map(o => ({...o, ...(byId[o.id] || {})}));
@@ -19,6 +32,15 @@ function loadLocalState(){
     const p = JSON.parse(localStorage.getItem(profileKey) || "null");
     if(p) profile = p;
   }catch(e){ console.warn("Local state load failed", e); }
+}
+function applyMigration20260922(){
+  if(localStorage.getItem(migrationKey20260922)) return;
+  Object.entries(contactedMigration20260922).forEach(([id,status])=>{
+    const o=opportunities.find(x=>x.id===id);
+    if(o) o.application_status=status;
+  });
+  saveState();
+  localStorage.setItem(migrationKey20260922,"1");
 }
 function saveState(){
   const seedIds = new Set((window.SEED_OPPORTUNITIES || []).map(o=>o.id));
@@ -155,6 +177,7 @@ function importBackup(file){
 }
 
 loadLocalState();
+applyMigration20260922();
 const last=(searchLog||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];document.getElementById('lastSync').textContent='最后检索：'+(last?.date||'—');
 renderDashboard();populateFilters();renderOpportunities();renderProfile();renderHistory();
 document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>switchView(b.dataset.view)));
